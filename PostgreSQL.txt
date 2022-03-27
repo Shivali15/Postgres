@@ -1,0 +1,1201 @@
+Postgres:
+ open source
+ Robust
+ high performance
+
+ Postgres is uses as SQL as its main  query language
+-------------------------------------------------------------------------------------------------------------------
+
+Database :
+store
+manipulate
+retreive
+the data 
+-------------------------------------------------------------------------------------------------------------------
+
+SQL : Structured query language
+
+SQL is programming language
+
+Manage the data held in relational database
+easy to learn 
+very powerful 
+1974
+used all  over the internet
+-------------------------------------------------------------------------------------------------------------------
+How data stored :
+
+stores data in tables  :
+ this tables ar perform by rows and columns
+
+-------------------------------------------------------------------------------------------------------------------
+Postgres:
+
+object relational database management system 
+modern open source
+
+other : Oracle, microsoft SQL server, MYSQL
+
+-------------------------------------------------------------------------------------------------------------------
+To clear screen : \! cls
+
+postgres=# help
+You are using psql, the command-line interface to PostgreSQL.
+Type:  \copyright for distribution terms
+       \h for help with SQL commands
+       \? for help with psql commands
+       \g or terminate with semicolon to execute query
+       \q to quit
+
+-------------------------------------------------------------------------------------------------------------------
+To create database :
+
+Do not missed the semicolon at the last (;)
+
+
+postgres=# CREATE DATABASE test ;
+CREATE DATABASE
+postgres=# \l
+                                         List of databases
+   Name    |  Owner   | Encoding |      Collate       |       Ctype        |   Access privileges
+-----------+----------+----------+--------------------+--------------------+-----------------------
+ postgres  | postgres | UTF8     | English_India.1252 | English_India.1252 |
+ template0 | postgres | UTF8     | English_India.1252 | English_India.1252 | =c/postgres          +
+           |          |          |                    |                    | postgres=CTc/postgres
+ template1 | postgres | UTF8     | English_India.1252 | English_India.1252 | =c/postgres          +
+           |          |          |                    |                    | postgres=CTc/postgres
+ test      | postgres | UTF8     | English_India.1252 | English_India.1252 |
+(4 rows)
+-------------------------------------------------------------------------------------------------------------------
+
+To connect to database:
+postgres-# \c
+You are now connected to database "postgres" as user "postgres".
+postgres-# \c test
+You are now connected to database "test" as user "postgres".
+
+-------------------------------------------------------------------------------------------------------------------
+
+To delete the database :
+
+postgres=# DROP DATABASE test;
+DROP DATABASE
+postgres=# \l
+                                         List of databases
+   Name    |  Owner   | Encoding |      Collate       |       Ctype        |   Access privileges
+-----------+----------+----------+--------------------+--------------------+-----------------------
+ postgres  | postgres | UTF8     | English_India.1252 | English_India.1252 |
+ template0 | postgres | UTF8     | English_India.1252 | English_India.1252 | =c/postgres          +
+           |          |          |                    |                    | postgres=CTc/postgres
+ template1 | postgres | UTF8     | English_India.1252 | English_India.1252 | =c/postgres          +
+           |          |          |                    |                    | postgres=CTc/postgres
+(3 rows)
+
+
+-------------------------------------------------------------------------------------------------------------------
+
+
+ To create table :
+postgres=# CREATE TABLE person(
+postgres(# id INT ,
+postgres(#  first_name VARCHAR(50),
+postgres(# last_name VARCHAR(70),
+postgres(# gender VARCHAR(7),
+postgres(# date_of_birth DATE);
+CREATE TABLE
+-------------------------------------------------------------------------------------------------------------------
+
+
+To describe the table :
+
+postgres=# \d
+         List of relations
+ Schema |  Name  | Type  |  Owner
+--------+--------+-------+----------
+ public | person | table | postgres
+(1 row)
+
+
+-------------------------------------------------------------------------------------------------------------------
+
+
+To describe table person in details :
+
+postgres=# \d person
+                         Table "public.person"
+    Column     |         Type          | Collation | Nullable | Default
+---------------+-----------------------+-----------+----------+---------
+ id            | integer               |           |          |
+ first_name    | character varying(50) |           |          |
+ last_name     | character varying(70) |           |          |
+ gender        | character varying(7)  |           |          |
+ date_of_birth | date                  |           |          |
+
+
+
+-------------------------------------------------------------------------------------------------------------------
+
+Drop/Delete the table :
+
+postgres=# DROP TABLE person;
+DROP TABLE
+postgres=# \d
+Did not find any relations.
+
+-------------------------------------------------------------------------------------------------------------------
+To create a table using constraints:
+
+BIGSERIAL : means signed integer which auto increment
+
+postgres=# CREATE TABLE person (
+postgres(# id BIGSERIAL NOT NULL PRIMARY KEY,
+postgres(# first_name VARCHAR(50) NOT NULL,
+postgres(# last_name VARCHAR(70) NOT NULL,
+postgres(# gender VARCHAR(7) NOT NULL,
+postgres(# date_of_birth DATE NOT NULL,
+postgres(# email VARCHAR(150));
+CREATE TABLE
+
+
+
+
+postgres=# \d person
+                                       Table "public.person"
+    Column     |          Type          | Collation | Nullable |              Default
+---------------+------------------------+-----------+----------+------------------------------------
+ id            | bigint                 |           | not null | nextval('person_id_seq'::regclass)
+ first_name    | character varying(50)  |           | not null |
+ last_name     | character varying(70)  |           | not null |
+ gender        | character varying(7)   |           | not null |
+ date_of_birth | date                   |           | not null |
+ email         | character varying(150) |           |          |
+Indexes:
+    "person_pkey" PRIMARY KEY, btree (id)
+
+
+postgres=# \d
+              List of relations
+ Schema |     Name      |   Type   |  Owner
+--------+---------------+----------+----------
+ public | person        | table    | postgres
+ public | person_id_seq | sequence | postgres
+(2 rows)
+
+-------------------------------------------------------------------------------------------------------------------
+insert records into tables:
+
+postgres=#  INSERT INTO person (first_name, last_name,gender,date_of_birth)
+postgres-#  VALUES ('jacky','jones','MALE',date '1998-12-31');
+INSERT 0 1
+-------------------------------------------------------------------------------------------------------------------
+
+
+
+views the records from table:
+
+postgres=# SELECT *FROM person;
+ id | first_name | last_name | gender | date_of_birth |     email
+----+------------+-----------+--------+---------------+----------------
+  1 | Anne       | smith     | FEMALE | 1999-01-10    | anne@gmail.com
+  2 | jacky      | jones     | MALE   | 1998-12-31    |
+(2 rows)
+
+-------------------------------------------------------------------------------------------------------------------
+Go to mockaroo.com -> random database generator 
+create person data of 1000 rows -> 
+first_name ,last_name,date_of_birth,gender ,email,country_of_birth
+
+download ->person databse 
+
+//connect to test database 
+postgres=# \c test
+You are now connected to database "test" as user "postgres".
+//fetch person.sql databse in test 
+test=# \i 'E:\person.sql'
+CREATE TABLE
+
+// check the database table
+test=# SELECT *FROM person;
+
+
+
+
+
+
+
+-------------------------------------------------------------------------------------------------------------------
+
+test=# SELECT FROM  person;
+--
+(2 rows)
+
+test=# SELECT first_name FROM person;
+first_name
+----------
+Anne
+jake
+(2 rows)
+
+test=# SELECT first_name,last_name FROM person;
+first_name | last_name
+-----------|----------------
+Anne       | Smith
+jake       | Jones
+(2 rows)
+
+
+
+test=# SELECT *FROM person;
+
+// whole table will show with all rows n all columns
+-------------------------------------------------------------------------------------------------------------------
+Descending order:
+
+test=#  SELECT *FROM person ORDER BY country_of_birth DESC;
+
+Ascending order:
+
+test=#  SELECT *FROM person ORDER BY country_of_birth ASC;
+
+
+test=# SELECT *FROM person ORDER BY id DESC;
+
+test=# SELECT *FROM person ORDER BY first_name DESC;
+
+
+test=# SELECT *FROM person ORDER BY email DESC;
+-------------------------------------------------------------------------------------------------------------------
+
+remove duplicate :
+test=# SELECT DISTINCT country_of_birth FROM person ORDER BY country_of_birth;
+-------------------------------------------------------------------------------------------------------------------
+WHERE Clause: conditions
+Fliter based on cloumn
+
+test=# SELECT * FROM person WHERE gender='Female';
+
+test=# SELECT * FROM person WHERE gender='Male';
+
+
+test=#  SELECT * FROM person WHERE gender='Male' AND country_of_birth='Poland';
+
+
+test=# SELECT * FROM person WHERE gender='Male' AND (country_of_birth='Poland' OR country_of_birth='China');
+
+-------------------------------------------------------------------------------------------------------------------
+Comparisons operators:
+  t= true/false =f
+
+test=# SELECT 1=1;
+ ?column?
+----------
+ t
+(1 row)
+
+
+test=# SELECT 1=2;
+ ?column?
+----------
+ f
+(1 row)
+
+
+test=# SELECT 1<2;
+ ?column?
+----------
+ t
+(1 row)
+
+
+test=# SELECT 1<=2;
+ ?column?
+----------
+ t
+(1 row)
+
+
+test=# SELECT 1<1;
+ ?column?
+----------
+ f
+(1 row)
+
+
+NOT EQUAL: <>
+
+test=# SELECT 1 <> 2;
+ ?column?
+----------
+ t
+(1 row)
+
+-------------------------------------------------------------------------------------------------------------------
+Limit :
+
+GIVE ONLY 10 first persons in table
+
+test=# SELECT * FROM person LIMIT 10;
+ id | first_name |  last_name  |             email              | gender  | date_of_birth | country_of_birth
+----+------------+-------------+--------------------------------+---------+---------------+------------------
+  1 | Corella    | Terrett     | cterrett2@wikia.com            | Female  | 2021-06-24    | Greece
+  2 | Rhetta     | Sutherns    | rsutherns3@businessinsider.com | Female  | 2021-09-01    | United States
+  3 | Dorry      | De Gregario | ddegregario4@examiner.com      | Female  | 2022-02-17    | Czech Republic
+  4 | Dalston    | Pasticznyk  | dpasticznyk5@sciencedirect.com | Male    | 2021-10-27    | Sweden
+  5 | Leanna     | Edwicke     | ledwicke7@wikimedia.org        | Agender | 2021-03-31    | Kazakhstan
+  6 | Alair      | Rayworth    | arayworth8@miibeian.gov.cn     | Male    | 2021-03-26    | Philippines
+  7 | Jule       | Inkster     | jinkstera@amazon.co.jp         | Male    | 2021-07-28    | China
+  8 | Vin        | Cogan       | vcoganb@scientificamerican.com | Female  | 2021-09-12    | Russia
+  9 | Aeriela    | Drezzer     | adrezzerc@domainmarket.com     | Female  | 2021-08-27    | Greece
+ 10 | Elsinore   | Wilgar      | ewilgard@narod.ru              | Female  | 2021-09-03    | China
+(10 rows)
+
+Give only first 5 :
+
+test=# SELECT * FROM person LIMIT 5;
+ id | first_name |  last_name  |             email              | gender  | date_of_birth | country_of_birth
+----+------------+-------------+--------------------------------+---------+---------------+------------------
+  1 | Corella    | Terrett     | cterrett2@wikia.com            | Female  | 2021-06-24    | Greece
+  2 | Rhetta     | Sutherns    | rsutherns3@businessinsider.com | Female  | 2021-09-01    | United States
+  3 | Dorry      | De Gregario | ddegregario4@examiner.com      | Female  | 2022-02-17    | Czech Republic
+  4 | Dalston    | Pasticznyk  | dpasticznyk5@sciencedirect.com | Male    | 2021-10-27    | Sweden
+  5 | Leanna     | Edwicke     | ledwicke7@wikimedia.org        | Agender | 2021-03-31    | Kazakhstan
+(5 rows)
+
+
+-------------------------------------------------------------------------------------------------------------------
+
+Offset:
+
+test=# SELECT * FROM person OFFSET 5 LIMIT 5;
+ id | first_name | last_name |             email              | gender | date_of_birth | country_of_birth
+----+------------+-----------+--------------------------------+--------+---------------+------------------
+  6 | Alair      | Rayworth  | arayworth8@miibeian.gov.cn     | Male   | 2021-03-26    | Philippines
+  7 | Jule       | Inkster   | jinkstera@amazon.co.jp         | Male   | 2021-07-28    | China
+  8 | Vin        | Cogan     | vcoganb@scientificamerican.com | Female | 2021-09-12    | Russia
+  9 | Aeriela    | Drezzer   | adrezzerc@domainmarket.com     | Female | 2021-08-27    | Greece
+ 10 | Elsinore   | Wilgar    | ewilgard@narod.ru              | Female | 2021-09-03    | China
+(5 rows)
+
+
+-------------------------------------------------------------------------------------------------------------------
+
+fetch:  IT is same as limit
+
+test=# SELECT * FROM person OFFSET 5 FETCH FIRST 5 ROW ONLY;
+ id | first_name | last_name |             email              | gender | date_of_birth | country_of_birth
+----+------------+-----------+--------------------------------+--------+---------------+------------------
+  6 | Alair      | Rayworth  | arayworth8@miibeian.gov.cn     | Male   | 2021-03-26    | Philippines
+  7 | Jule       | Inkster   | jinkstera@amazon.co.jp         | Male   | 2021-07-28    | China
+  8 | Vin        | Cogan     | vcoganb@scientificamerican.com | Female | 2021-09-12    | Russia
+  9 | Aeriela    | Drezzer   | adrezzerc@domainmarket.com     | Female | 2021-08-27    | Greece
+ 10 | Elsinore   | Wilgar    | ewilgard@narod.ru              | Female | 2021-09-03    | China
+(5 rows)
+
+
+-------------------------------------------------------------------------------------------------------------------
+IN:
+
+test=#  SELECT * FROM person WHERE country_of_birth='China' OR country_of_birth='Brazil' OR country_of_birth='Mexico';
+
+This is thing is easily done by IN key Word
+
+test=# SELECT * FROM person
+test-# WHERE country_of_birth IN ('China','Brazil','Mexico');
+
+-------------------------------------------------------------------------------------------------------------------
+BETWEEN:
+
+test=#  SELECT * FROM person WHERE  date_of_birth  BETWEEN DATE '2021-12-01'AND '2022-01-06';
+
+
+ id  |  first_name  |   last_name    |              email               | gender  | date_of_birth |  country_of_birth
+-----+--------------+----------------+----------------------------------+---------+---------------+--------------------
+  21 | Conrade      | Laurentin      | claurentinp@oakley.com           | Male    | 2022-01-04    | Brazil
+  28 | Velma        | Sheirlaw       | vsheirlawx@tripod.com            | Female  | 2021-12-31    | France
+  43 | Gregor       | Rollinson      | grollinson1c@t-online.de         | Male    | 2021-12-02    | Greece
+  68 | Toiboid      | Coaker         | tcoaker26@vimeo.com              | Male    | 2021-12-10    | Uruguay
+  73 | Ofella       | Kaser          | okaser2b@wp.com                  | Female  | 2021-12-05    | Mongolia
+  75 | Jacklyn      | O'Fallowne     |                                  | Female  | 2021-12-16    | Peru
+  81 | Carma        | Schoenfisch    | cschoenfisch2k@friendfeed.com    | Female  | 2021-12-18    | Indonesia
+  82 | Emory        | Mawford        | emawford2l@japanpost.jp          | Male    | 2021-12-27    | Brazil
+  92 | Wilona       | Palphramand    | wpalphramand2w@scribd.com        | Female  | 2021-12-01    | Colombia
+ 123 | Obediah      | Scotti         | oscotti3u@friendfeed.com         | Male    | 2022-01-01    | Cameroon
+ 125 | Raff         | Doel           | rdoel3x@sphinn.com    
+
+-------------------------------------------------------------------------------------------------------------------
+
+
+LIKE operator:
+
+test=# SELECT * FROM person WHERE email LIKE '%@google.com';
+ id  | first_name | last_name |         email         | gender | date_of_birth | country_of_birth
+-----+------------+-----------+-----------------------+--------+---------------+------------------
+ 492 | Rorke      | Roberds   | rroberdsf4@google.com | Male   | 2021-10-15    | China
+(1 row)
+
+
+
+test=# SELECT * FROM person WHERE email LIKE '%@google.%';
+
+ id  |  first_name  |  last_name  |            email            | gender | date_of_birth | country_of_birth
+-----+--------------+-------------+-----------------------------+--------+---------------+------------------
+  54 | Twila        | Wigelsworth | twigelsworth1r@google.co.jp | Female | 2021-07-19    | Thailand
+ 101 | Querida      | Standidge   | qstandidge36@google.ca      | Female | 2021-05-16    | France
+ 118 | Arlan        | Shoosmith   | ashoosmith3o@google.fr      | Male   | 2022-01-29    | Russia
+ 192 | Hyacinth     | Romer       | hromer5v@google.fr          | Female | 2021-10-12    | Mexico
+ 243 | Quillan      | Krzyzowski  | qkrzyzowski7h@google.cn     | Male   | 2022-02-09    | Indonesia
+ 308 | Gregg        | Balshen     | gbalshen9h@google.co.jp     | Male   | 2021-05-27    | China
+ 335 | Waly         | Seleway     | wselewaya9@google.nl        | Female | 2021-04-25    | Thailand
+ 361 | Mireille     | Sillitoe    | msillitoeb3@google.ru       | Female | 2021-06-16    | Indonesia
+ 473 | Barthel      | Rainey      | braineyei@google.de         | Male   | 2021-08-31    | Malaysia
+ 492 | Rorke        | Roberds     | rroberdsf4@google.com       | Male   
+
+
+
+test=#  SELECT * FROM person WHERE email LIKE '______@%';
+ id  | first_name | last_name |        email         | gender  | date_of_birth | country_of_birth
+-----+------------+-----------+----------------------+---------+---------------+------------------
+  19 | Matthieu   | Caig      | mcaign@hhs.gov       | Male    | 2021-04-23    | China
+  24 | Cassandre  | Waby      | cwabys@about.me      | Female  | 2022-03-23    | Thailand
+  51 | Cami       | Lax       | clax1o@ucoz.com      | Female  | 2021-05-03    | Portugal
+ 437 | Dalis      | Oda       | dodadf@noaa.gov      | Male    | 2021-07-30    | Peru
+ 604 | Brett      | Nye       | bnyeim@parallels.com | Agender | 2022-03-02    | Colombia
+ 714 | Dacy       | Eye       | deyem1@psu.edu       | Female  | 2021-05-03    | Nigeria
+ 815 | Emmit      | Wyd       | ewydp6@facebook.com  | Male    | 2021-05-24    | Japan
+(7 rows)
+
+
+
+test=# SELECT * FROM person WHERE country_of_birth LIKE 'Phi%';
+ id  | first_name  |  last_name   |            email             | gender | date_of_birth | country_of_birth
+-----+-------------+--------------+------------------------------+--------+---------------+------------------
+   6 | Alair       | Rayworth     | arayworth8@miibeian.gov.cn   | Male   | 2021-03-26    | Philippines
+  25 | Birdie      | Borkett      |                              | Female | 2021-06-18    | Philippines
+  47 | Orbadiah    | Wilshaw      | owilshaw1g@imageshack.us     | Male   | 2021-08-26    | Philippines
+  80 | Gaston      | Lantiffe     |                              | Male   | 2021-08-16    | Philippines
+  85 | Annmaria    | Timmes       | atimmes2o@ibm.com            | Female | 2021-08-23    | Philippines
+  98 | Vivianne    | Eschelle     | veschelle33@columbia.edu     | Female | 2022-01-22    | Philippines
+ 125 | Raff        | Doel         | rdoel3x@sphinn.com           | Ma
+
+-------------------------------------------------------------------------------------------------------------------
+
+DISTINCT :
+
+test=# SELECT DISTINCT country_of_birth FROM person;
+         country_of_birth
+----------------------------------
+ Bangladesh
+ Indonesia
+ Venezuela
+ Cameroon
+ Luxembourg
+ Czech Republic
+ Sweden
+ Uganda
+ Dominican Republic
+ Ireland
+ Cambodia
+ Macedonia
+ Sri Lanka
+ Laos
+ Finland
+ Portugal
+ Colombia
+ Albania
+ Saudi Arabia
+ Ukraine
+ Cuba
+ Latvia
+ North Korea
+ France
+ Syria
+ Ghana
+ Kenya
+ Malaysia
+ Senegal
+ Madagascar
+ Sierra Leone
+ Bosnia and Herzegovina
+ Philippines
+ Benin
+ United States
+ Guinea
+ Nigeria
+ Tajikistan
+ Zimbabwe
+ Guam
+ China
+ Armenia
+ Belarus
+ Netherlands
+ Paraguay
+ Serbia
+ Mauritius
+ Spain
+ Georgia
+ Malawi
+ Burundi
+ Thailand
+ El Salvador
+ Italy
+ Uruguay
+ Oman
+ Fiji
+ United Kingdom
+ Palau
+ Germany
+ Canada
+ South Korea
+ Saint Vincent and the Grenadines
+ Namibia
+ Argentina
+ Azerbaijan
+ Egypt
+ Greece
+ Bahamas
+ Afghanistan
+ Iran
+ Saint Kitts and Nevis
+ Chile
+ Gambia
+ Estonia
+ Vietnam
+ South Africa
+ Peru
+ Kazakhstan
+ Central African Republic
+ Kosovo
+ Japan
+ Ivory Coast
+ Trinidad and Tobago
+ Mongolia
+ Iraq
+ Mauritania
+ Switzerland
+ New Zealand
+ Hungary
+ Russia
+ Belize
+ Norway
+ Honduras
+ Pakistan
+ Brazil
+ Guatemala
+ Bolivia
+ Ethiopia
+ Niger
+ Panama
+ Yemen
+ Bulgaria
+ Croatia
+ Tunisia
+ Mali
+ Morocco
+ Moldova
+ Myanmar
+ Nicaragua
+ Mexico
+ Nepal
+ Tanzania
+ Palestinian Territory
+ Poland
+ Haiti
+ Equatorial Guinea
+ Andorra
+(118 rows)
+
+-------------------------------------------------------------------------------------------------------------------
+GROUP BY:extra fliter after perfroming aggregation 
+
+COUNT :sum up the data 
+
+
+test=# SELECT country_of_birth, COUNT(*) FROM person GROUP BY country_of_birth ORDER BY country_of_birth;
+         country_of_birth         | count
+----------------------------------+-------
+ Afghanistan                      |     3
+ Albania                          |     1
+ Andorra                          |     1
+ Argentina                        |    13
+ Armenia                          |     1
+ Azerbaijan                       |     1
+ Bahamas                          |     1
+ Bangladesh                       |     3
+ Belarus                          |     4
+ Belize                           |     1
+ Benin                            |     1
+ Bolivia                          |     1
+ Bosnia and Herzegovina           |     3
+ Brazil                           |    38
+ Bulgaria                         |     3
+ Burundi                          |     1
+ Cambodia                         |     2
+ Cameroon                         |     3
+ Canada                           |    10
+ Central African Republic         |     1
+ Chile                            |     3
+ China                            |   180
+ Colombia                         |    10
+-- More  --
+
+
+-------------------------------------------------------------------------------------------------------------------
+
+HAVING :
+
+test=# SELECT country_of_birth ,COUNT(*) FROM person GROUP BY country_of_birth HAVING COUNT(*) =3 ORDER BY country_of_birth ;
+    country_of_birth    | count
+------------------------+-------
+ Afghanistan            |     3
+ Bangladesh             |     3
+ Bosnia and Herzegovina |     3
+ Bulgaria               |     3
+ Cameroon               |     3
+ Chile                  |     3
+ Dominican Republic     |     3
+ Egypt                  |     3
+ Ethiopia               |     3
+ Germany                |     3
+ Guinea                 |     3
+ Honduras               |     3
+ Ireland                |     3
+ Kenya                  |     3
+ Macedonia              |     3
+ Malaysia               |     3
+ Myanmar                |
+
+
+
+ test=#  SELECT country_of_birth ,COUNT(*) FROM person GROUP BY country_of_birth HAVING COUNT(*) > 12 ORDER BY country_of_birth ;
+ country_of_birth | count
+------------------+-------
+ Argentina        |    13
+ Brazil           |    38
+ China            |   180
+ Czech Republic   |    15
+ France           |    27
+ Indonesia        |    82
+ Japan            |    15
+ Peru             |    22
+ Philippines      |    60
+ Poland           |    18
+ Portugal         |    27
+ Russia           |    52
+ Sweden           |    18
+ Thailand         |    16
+ Ukraine          |    20
+ United States    |    13
+(16 rows)
+
+
+
+test=# SELECT country_of_birth ,COUNT(*) FROM person GROUP BY country_of_birth HAVING COUNT(*) > 40 ORDER BY country_of_birth ;
+ country_of_birth | count
+------------------+-------
+ China            |   180
+ Indonesia        |    82
+ Philippines      |    60
+ Russia           |    52
+(4 rows)
+
+-------------------------------------------------------------------------------------------------------------------
+MAX /MIN :
+
+test=# SELECT MAX(price) FROM car;
+   max
+----------
+ 98414.00
+(1 row)
+
+
+
+test=# SELECT MIN(price) FROM car;
+   min
+----------
+ 10443.00
+(1 row)
+-------------------------------------------------------------------------------------------------------------------
+AVG:
+
+test=# SELECT AVG(price) FROM car;
+        avg
+--------------------
+ 51974.610000000000
+(1 row)
+
+-------------------------------------------------------------------------------------------------------------------
+
+test=# SELECT make,model,MIN(price) FROM car GROUP BY make ,model;
+     make      |      model      |   min
+---------------+-----------------+----------
+ Toyota        | Prius           | 80899.00
+ Buick         | Century         | 39670.00
+ Toyota        | Avalon          | 26857.00
+ Mazda         | B-Series Plus   | 56599.00
+ Ford          | Crown Victoria  | 74532.00
+ Kia           | Sorento         | 38160.00
+ Chevrolet     | SSR             | 64293.00
+ Toyota        | Land Cruiser    | 61319.00
+ Mercedes-Benz | S-Class         | 28837.00
+ Infiniti      | FX              | 65933.00
+ Mercury       | Topaz           | 50972.00
+ Chrysler      | 300             | 49274.00
+ Bentley       | Continental GT  | 27036.00
+ Buick         | Coachbuilder    | 93546.00
+
+
+test=# SELECT make,model,MAX(price) FROM car GROUP BY make ,model;
+     make      |      model      |   max
+---------------+-----------------+----------
+ Toyota        | Prius           | 80899.00
+ Buick         | Century         | 39670.00
+ Toyota        | Avalon          | 26857.00
+ Mazda         | B-Series Plus   | 56599.00
+ Ford          | Crown Victoria  | 74532.00
+ Kia           | Sorento         | 38160.00
+ Chevrolet     | SSR             | 64293.00
+ Toyota        | Land Cruiser    | 61319.00
+
+
+
+
+ test=# SELECT make, MAX(price) FROM car GROUP BY make;
+     make      |   max
+---------------+----------
+ Honda         | 20154.00
+ Ford          | 91420.00
+ Dodge         | 96428.00
+ Chevrolet     | 91437.00
+ Infiniti      | 82559.00
+ Bentley       | 27036.00
+ Pontiac       | 65890.00
+ Porsche       | 86058.00
+ Alfa Romeo    | 54284.00
+
+-------------------------------------------------------------------------------------------------------------------
+
+ SUM:
+ test=# SELECT SUM(price) FROM car;
+    sum
+------------
+ 5197461.00
+(1 row)
+
+-------------------------------------------------------------------------------------------------------------------
+Basic Arithematic operator:
+
+test=# SELECT 10+2;
+ ?column?
+----------
+       12
+(1 row)
+
+
+test=#  SELECT 10/2;
+ ?column?
+----------
+        5
+(1 row)
+
+
+test=#  SELECT 10^9;
+  ?column?
+------------
+ 1000000000
+(1 row)
+
+
+test=#  SELECT 265*240+40;
+ ?column?
+----------
+    63640
+(1 row)
+
+
+
+test=# SELECT 10%3;
+ ?column?
+----------
+        1
+(1 row)
+
+-------------------------------------------------------------------------------------------------------------------
+
+test=# SELECT id,make,model,price,ROUND(price * .10,2),ROUND(price - (price * .10)) FROM car;
+ id  |     make      |      model      |  price   |  round  | round
+-----+---------------+-----------------+----------+---------+-------
+   1 | Pontiac       | Grand Am        | 41397.00 | 4139.70 | 37257
+   2 | Mercedes-Benz | GL-Class        | 83146.00 | 8314.60 | 74831
+   3 | Ford          | Focus           | 32779.00 | 3277.90 | 29501
+   4 | GMC           | Safari          | 94108.00 | 9410.80 | 84697
+   5 | Infiniti      | I               | 82559.00 | 8255.90 | 74303
+   6 | Lexus         | HS              | 28598.00 | 2859.80 | 25738
+   7 | Pontiac       | Solstice        | 46238.00 | 4623.80 | 41614
+   8 | Volkswagen    | Golf            | 27802.00 | 2780.20 | 25022
+   9 | Buick         | Coachbuilder    | 93546.00 | 9354.60 | 84191
+  10 | Volkswagen    | New Beetle      | 12825.00 | 1282.50 | 11543
+  11 | Jeep          | Grand Cherokee  | 50658.00 | 5065.80 | 45592
+
+
+
+-------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+test=# SELECT id,make,model,price AS original_price,ROUND(price * .10,2)AS ten_percent_value,ROUND(price - (price * .10))AS discount_after_ten_percent FROM car;
+ id  |     make      |      model      | original_price | ten_percent_value | discount_after_ten_percent
+-----+---------------+-----------------+----------------+-------------------+----------------------------
+   1 | Pontiac       | Grand Am        |       41397.00 |           4139.70 |                      37257
+   2 | Mercedes-Benz | GL-Class        |       83146.00 |           8314.60 |                      74831
+   3 | Ford          | Focus           |       32779.00 |           3277.90 |                      29501
+   4 | GMC           | Safari          |       94108.00 |           9410.80 |                      84697
+   5 | Infiniti      | I               |       82559.00 |           8255.90 |                      74303
+   6 | Lexus         | HS              |       28598.00 |           2859.80 |                      25738
+   7 | Pontiac       | Solstice        |       46238.00 |           4623.80 |                      41614
+   8 | Volkswagen    | Golf            |       27802.00 |           2780.20 |                      25022
+   9 | Buick         | Coachbuilder    |       93546.00 |           9354.60 |                      84191
+  10 | Volkswagen    | New Beetle      |       12825.00 |           1282.50 |
+
+-------------------------------------------------------------------------------------------------------------------
+COALESCE:
+
+test=# SELECT COALESCE(email,'Email not provided!!') FROM person;
+               coalesce
+--------------------------------------
+ cterrett2@wikia.com
+ rsutherns3@businessinsider.com
+ ddegregario4@examiner.com
+ dpasticznyk5@sciencedirect.com
+ ledwicke7@wikimedia.org
+ arayworth8@miibeian.gov.cn
+ jinkstera@amazon.co.jp
+ vcoganb@scientificamerican.com
+ adrezzerc@domainmarket.com
+ ewilgard@narod.ru
+ Email not provided!!
+ pjesself@disqus.com
+ dkerinsg@fotki.com
+ mjahnsh@answers.com
+ wchicchettoj@cbc.ca
+ rbalfrek@globo.com
+ rinstrelll@about.com
+ nposnettem@youtu.be
+ mcaign@hhs.gov
+ Email not provided!!
+ claurentinp@oakley.com
+ dhaxbyq@slideshare.net
+
+
+-------------------------------------------------------------------------------------------------------------------
+NULLIF:
+
+test=# SELECT NULLIF(100,19);
+ nullif
+--------
+    100
+(1 row)
+
+test=# SELECT 10/ NULLIF(2,9);
+ ?column?
+----------
+        5
+(1 row)
+
+-------------------------------------------------------------------------------------------------------------------
+TIMESAMPS:
+
+NOW(): RETUEN DATE
+
+test=# SELECT NOW()::DATE;
+    now
+------------
+ 2022-03-27
+(1 row)
+
+
+test=#  SELECT NOW()::TIME;
+       now
+-----------------
+ 17:14:13.519503
+(1 row)
+-------------------------------------------------------------------------------------------------------------------
+
+Adding and subtracting DATE:
+
+test=# SELECT NOW() - INTERVAL '1 YEAR';
+             ?column?
+----------------------------------
+ 2021-03-27 17:57:05.454547+05:30
+(1 row)
+
+
+-------------------------------------------------------------------------------------------------------------------
+
+test=# SELECT NOW() - INTERVAL '1 MONTH';
+             ?column?
+----------------------------------
+ 2022-02-27 17:58:10.393126+05:30
+(1 row)
+
+-------------------------------------------------------------------------------------------------------------------
+
+test=#  SELECT NOW() - INTERVAL '10 DAYS';
+            ?column?
+---------------------------------
+ 2022-03-17 17:58:53.15088+05:30
+(1 row)
+
+
+
+test=# SELECT (NOW() + INTERVAL '10 DAYS')::DATE;
+    date
+------------
+ 2022-04-06
+(1 row)
+-------------------------------------------------------------------------------------------------------------------
+EXTRACTING FIELDS:Extract specific values from a date
+
+
+test=# SELECT EXTRACT(YEAR FROM NOW());
+ extract
+---------
+    2022
+(1 row)
+
+
+test=# SELECT EXTRACT(MONTH FROM NOW());
+ extract
+---------
+       3
+(1 row)
+
+
+test=# SELECT EXTRACT(DAY FROM NOW());
+ extract
+---------
+      27
+(1 row)
+
+
+test=# SELECT EXTRACT(DOW FROM NOW());
+ extract
+---------
+       0
+(1 row)
+
+
+test=# SELECT EXTRACT(CENTURY FROM NOW());
+ extract
+---------
+      21
+(1 row)
+-------------------------------------------------------------------------------------------------------------------
+AGE FUNCTION :
+
+test=# SELECT first_name ,last_name,gender,country_of_birth,date_of_birth,AGE(NOW(),date_of_birth) FROM person;
+   first_name    |   last_name    | gender  |         country_of_birth         | date_of_birth |               age
+-----------------+----------------+---------+----------------------------------+---------------+---------------------------------
+ Corella         | Terrett        | Female  | Greece                           | 2021-06-24    | 9 mons 3 days 18:08:04.661894
+ Rhetta          | Sutherns       | Female  | United States                    | 2021-09-01    | 6 mons 26 days 18:08:04.661894
+ Dorry           | De Gregario    | Female  | Czech Republic                   | 2022-02-17    | 1 mon 10 days 18:08:04.661894
+ Dalston         | Pasticznyk     | Male    | Sweden                           | 2021-10-27    | 5 mons 18:08:04.661894
+ Leanna          | Edwicke        | Agender | Kazakhstan                       | 2021-03-31    | 11 mons 27 days 18:08:04.661894
+ Alair           | Rayworth       | Male    | Philippines                      | 2021-03-26    | 1 year 1 day 18:08:04.661894
+ Jule            | Inkster        | Male    | China                            | 2021-07-28    | 7 mons 30 days 18:08:04.661894
+ Vin             | Cogan          | Female  | Russia                           | 2021-09-12    | 6 mons 15 days 18:08:04.661894
+ Aeriela         | Drezzer        | Female  | Greece                           | 2021-08-27    | 7 mons 18:08:04.661894
+
+-------------------------------------------------------------------------------------------------------------------
+primary key:
+
+test=# ALTER TABLE person DROP CONSTRAINT person_pkey;
+ALTER TABLE
+test=# \d person
+                                         Table "public.person"
+      Column      |          Type          | Collation | Nullable |              Default
+------------------+------------------------+-----------+----------+------------------------------------
+ id               | bigint                 |           | not null | nextval('person_id_seq'::regclass)
+ first_name       | character varying(50)  |           | not null |
+ last_name        | character varying(50)  |           | not null |
+ email            | character varying(150) |           |          |
+ gender           | character varying(7)   |           | not null |
+ date_of_birth    | date                   |           | not null |
+ country_of_birth | character varying(50)  |           |          |
+
+
+test=# SELECT * FROM person WHERE id=1;
+ id | first_name | last_name |        email        | gender | date_of_birth | country_of_birth
+----+------------+-----------+---------------------+--------+---------------+------------------
+  1 | Corella    | Terrett   | cterrett2@wikia.com | Female | 2021-06-24    | Greece
+  1 | allen      | shaney    | allen@gmail.com     | Male   | 1999-10-23    | delhi
+(2 rows)
+
+-------------------------------------------------------------------------------------------------------------------
+Adding primary key :
+PRIMARY KEYS :
+
+(uniquely identifies a record)
+2 records cannot have same id's
+//adding primary key
+ALTER TABLE person ADD PRIMARY KEY (id);
+-------------------------------------------------------------------------------------------------------------------
+
+UNIQUE CONSTRAINTS( allows us to have unique value per column) :
+
+SELECT email,count(*) FROM person GROUP BY email;
+//for checking duplicate emails(if more than one person has same email)
+SELECT email,count(*) FROM person GROUP BY email HAVING COUNT(*)>1;
+
+//adding unique constraints
+ALTER TABLE person ADD CONSTRAINT unique_email_address UNIQUE (email);
+ALTER TABLE person ADD UNIQUE (email); //here we let contsraint be named by postgres
+-------------------------------------------------------------------------------------------------------------------
+
+CHECK CONSTRAINTS (it allows us to add a constraint based on a boolean condition) :
+
+ALTER TABLE person ADD CONSTRAINT gender_constraint CHECK(gender = 'female' OR gender = 'Male');
+-------------------------------------------------------------------------------------------------------------------
+
+DELETE RECORDS:
+
+DELETE FROM person;
+DELETE FROM person WHERE id=1011;
+DELETE FROM person WHERE gender = 'Female' AND country_of_birth ='England';
+-------------------------------------------------------------------------------------------------------------------
+
+UPDATE COMMAND (ALLOWS US TO UPDATE A COLUMN OR MULTIPLE COLUMNS BASED ON OUR WHERE CLAUSE):
+
+UPDATE person SET email = 'omar@gmail.com' WHERE id=2011;
+-------------------------------------------------------------------------------------------------------------------
+
+Dealing with duplicate keys or errors :
+
+ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (first_name) DO NOTHING;
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email; (allows to override existing
+data, if present,otherwise, insert a new)
+-------------------------------------------------------------------------------------------------------------------
+
+FOREIGN KEYS,JOINS,RELATIONSHIPS :
+
+FOREIGN KEY - it is a column that refrences to primary key in another table
+car_id BIGINT REFERENCES car(id) UNIQUE (car_id);
+-------------------------------------------------------------------------------------------------------------------
+
+ADDING RELATIONSHIPS BETWEEN TABLES:
+
+1) a person can have one car
+2) a car can belong to only one person
+
+CREATE TABLE person(
+	id BIGSERIAL NOT NULL PRIMARY KEY,
+	first_name VARCHAR(50) NOT NULL,
+	gender VARCHAR(6) NOT NULL,
+	date_of_birth TIMESTAMP NOT NULL,
+	car_id BIGINT REFERENCES car(id), //foreign key refering to the primary key of car table
+	UNIQUE(car_id)
+)
+CREATE TABLE car(
+	id BIGSERIAL NOT NULL PRIMARY KEY,
+	etc
+)
+-------------------------------------------------------------------------------------------------------------------
+
+Updating foreign key column :
+
+UPDATE person SET car_id=2 WHERE id=1;
+-------------------------------------------------------------------------------------------------------------------
+
+INNER JOINS (takes whatever is common in both tables) :
+
+//performing inner join between 2 tables i.e person and car table
+//where car_id in person table links to the id in car table
+
+SELECT * FROM person JOIN car ON person.car_id =  car.id;
+
+\x ->comand for expanded display
+
+SELECT person.first_name , car.make, car.model, car.price FROM person JOIN car ON person.car_id = car.id;
+-------------------------------------------------------------------------------------------------------------------
+
+LEFT JOIN (return all rows from left and matching records from right table) :
+
+SELECT * FROM person LEFT JOIN ON car.id =  person.car_id;
+
+SELECT * FROM PERSON WHERE car_id is NULL;
+-------------------------------------------------------------------------------------------------------------------
+
+Deleting records with foreign keys :
+
+//first we have to delete the foreign key relation
+-------------------------------------------------------------------------------------------------------------------
+
+Exporting query results to CSV:
+
+SELECT * FROM person LEFT JOIN car ON car.id =  person.car_id;
+\copy ( SELECT * FROM person LEFT JOIN car ON car.id =  person.car_id;) TO '/c/Users/Riya/Documents/results.csv' DELIMITER ',' CSV HEADER;
+-------------------------------------------------------------------------------------------------------------------
+
+serials and sequences :
+
+BIGSERIAL ->auto increments an integer
+BIGINT  ->NOT NULL AUTO-INCREMENTS
+//to alter the sequence
+ALTER SEQUENCE person_id_seq RESTART WITH 10;
+-------------------------------------------------------------------------------------------------------------------
+
+EXTENSIONS (functions that can add extra functionality to our db) :
+
+//displays all available extensions
+SELECT * FROM pg_available_extensions
+-------------------------------------------------------------------------------------------------------------------
+
+Understand UUID data type :
+
+//universaly unique identifiers 
+//installing the uuid extension
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+//involke a function
+SELECT uuid_generate_v4();
+
+//every time generates a unique string so it can be used for primary keys
+//makes very hard for attackers or haclers
+//we will not get any clashes while migration dbs
+-------------------------------------------------------------------------------------------------------------------
+ UUID AS PRIMARY KEYS:
+
+CREATE TABLE person(
+	person_uuid UUID NOT NULL PRIMARY KEY,
+	first_name VARCHAR(50) NOT NULL,
+	gender VARCHAR(6) NOT NULL,
+	date_of_birth TIMESTAMP NOT NULL,
+	car_uuid UUID REFERENCES car(id), //foreign key refering to the primary key of car table
+	UNIQUE(car_uuid)
+)
+CREATE TABLE car(
+	car_uuid UUID NOT NULL PRIMARY KEY,
+	etc
+)
+SELECT * FROM person JOIN car ON person.car_uuid = car.car_uuid;
+SELECT car using(car_uuid);
+//performing left join
+SELECT * FROM person LEFT JOIN car USING( car_uuid) WHERE car.* IS NULL;
+
+-------------------------------------------------------------------------------------------------------------------
+Important : 
+bigserial has a function nextval('table_name_column_name__seq'::regclass) 
+which is responsiable for increment of value by 1 
+internally its data type is bigint 
+we can reset the value of nextval('table_name_column_name_seq'::regclass) after we increased to a level . 
+command for reset is : alter sequence table_name_column_name_seq restart with 10;
+
+we can use uuid instead of bigserial  .so that we get unique id values
+create table person (id uuid not null primary key)
+insert into person (id) values (uuid_generate_v4())
+
+
+
+Exporting Query Results to CSV :
+\copy (query) to 'full_path/file.csv' delimiter ',' csv header;
