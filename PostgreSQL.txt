@@ -1034,7 +1034,7 @@ test=# SELECT * FROM person WHERE id=1;
 
 -------------------------------------------------------------------------------------------------------------------
 Adding primary key :
-PRIMARY KEYS :
+PRIMARY KEYS : allows us to unique identify a record in a table
 
 (uniquely identifies a record)
 2 records cannot have same id's
@@ -1062,7 +1062,10 @@ DELETE RECORDS:
 
 DELETE FROM person;
 DELETE FROM person WHERE id=1011;
+DELETE 1
 DELETE FROM person WHERE gender = 'Female' AND country_of_birth ='England';
+DELETE FROM person WHERE gender = 'Male';
+DELETE 516
 -------------------------------------------------------------------------------------------------------------------
 
 UPDATE COMMAND (ALLOWS US TO UPDATE A COLUMN OR MULTIPLE COLUMNS BASED ON OUR WHERE CLAUSE):
@@ -1070,46 +1073,49 @@ UPDATE COMMAND (ALLOWS US TO UPDATE A COLUMN OR MULTIPLE COLUMNS BASED ON OUR WH
 UPDATE person SET email = 'omar@gmail.com' WHERE id=2011;
 -------------------------------------------------------------------------------------------------------------------
 
-Dealing with duplicate keys or errors :
+Dealing with duplicate keys or errors : use ON CONFLICT make sure that ur column is unique (have a constraint either primary key or unique constraint)
 
 ON CONFLICT (id) DO NOTHING;
 ON CONFLICT (first_name) DO NOTHING;
 ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email; (allows to override existing
-data, if present,otherwise, insert a new)
+data, if present,otherwise, insert a new) 
+email refer -> the original (old) email that is stored in database
+EXCLUDED.email refer to -> the one which is about to inserted 
 -------------------------------------------------------------------------------------------------------------------
 
 FOREIGN KEYS,JOINS,RELATIONSHIPS :
 
-FOREIGN KEY - it is a column that refrences to primary key in another table
+FOREIGN KEY - it is a column that refrences to primary key in another table(type need to be same int /or any other)
 car_id BIGINT REFERENCES car(id) UNIQUE (car_id);
+1) a person can have one car
 -------------------------------------------------------------------------------------------------------------------
 
 ADDING RELATIONSHIPS BETWEEN TABLES:
 
-1) a person can have one car
-2) a car can belong to only one person
+a) a person can have one car
+b) a car can belong to only one person
 
 CREATE TABLE person(
 	id BIGSERIAL NOT NULL PRIMARY KEY,
 	first_name VARCHAR(50) NOT NULL,
 	gender VARCHAR(6) NOT NULL,
 	date_of_birth TIMESTAMP NOT NULL,
-	car_id BIGINT REFERENCES car(id), //foreign key refering to the primary key of car table
-	UNIQUE(car_id)
+	car_id BIGINT REFERENCES car(id), //to add foreign key refering to the primary key of car table (relationship between person and car )
+	UNIQUE(car_id)  // a car can only be owned by one person -> to add UNIQUE constraint 
 )
 CREATE TABLE car(
 	id BIGSERIAL NOT NULL PRIMARY KEY,
 	etc
 )
 -------------------------------------------------------------------------------------------------------------------
-
+ u can only assign a foreign key when there is a  relation in the other table 
 Updating foreign key column :
 
 UPDATE person SET car_id=2 WHERE id=1;
 -------------------------------------------------------------------------------------------------------------------
 
 INNER JOINS (takes whatever is common in both tables) :
-
+ // JOIN takes two table A and B  and if we have  a foreign key that is present in both tables then we have a new record called C
 //performing inner join between 2 tables i.e person and car table
 //where car_id in person table links to the id in car table
 
@@ -1120,49 +1126,79 @@ SELECT * FROM person JOIN car ON person.car_id =  car.id;
 SELECT person.first_name , car.make, car.model, car.price FROM person JOIN car ON person.car_id = car.id;
 -------------------------------------------------------------------------------------------------------------------
 
-LEFT JOIN (return all rows from left and matching records from right table) :
+LEFT JOIN (include  all rows from left and matching records from right table) :
+return all records even if there is not a match
+
+LEFT JOIN: basically join the two tables including records which dont have foreign key relationship
 
 SELECT * FROM person LEFT JOIN ON car.id =  person.car_id;
 
+//find which people dont have a car
 SELECT * FROM PERSON WHERE car_id is NULL;
 -------------------------------------------------------------------------------------------------------------------
 
 Deleting records with foreign keys :
 
 //first we have to delete the foreign key relation
+
+// two options:
+
+// 1. first delete john becoz there is not foreign key constraint between john n some other table
+or
+// 2. we can update the car ID to NOW n then delete the actual car 
+DELETE FROM person WHERE id=9000;
+DELETE 1
+
+DELETE FROM car WHERE id=13;
+DELETE 1
 -------------------------------------------------------------------------------------------------------------------
 
 Exporting query results to CSV:
 
+we want to do is actually select our data so perfrom a selection and then export that to a CSV file 
+
 SELECT * FROM person LEFT JOIN car ON car.id =  person.car_id;
-\copy ( SELECT * FROM person LEFT JOIN car ON car.id =  person.car_id;) TO '/c/Users/Riya/Documents/results.csv' DELIMITER ',' CSV HEADER;
+//  \copy : perfroms a sequel copy with data stream to declined host
+
+\copy ( SELECT * FROM person LEFT JOIN car ON car.id =  person.car_id;) TO 'C:\Users\HP\Git\Desktop\results.csv' DELIMITER ',' CSV HEADER;
 -------------------------------------------------------------------------------------------------------------------
 
-serials and sequences :
+serials and 
+sequences : is simply a bigint 
 
-BIGSERIAL ->auto increments an integer
+BIGSERIAL ->auto increments a number that number is an integer
 BIGINT  ->NOT NULL AUTO-INCREMENTS
 //to alter the sequence
+
+// restart the actual values :
 ALTER SEQUENCE person_id_seq RESTART WITH 10;
+SELECT * FROM person_id_seq RESTART WITH 10;
+
+SELECT nextval('person_id_seq'::regclass);
 -------------------------------------------------------------------------------------------------------------------
+postgres extension:
+EXTENSIONS (functions that can add extra functionality to ur database) :
 
-EXTENSIONS (functions that can add extra functionality to our db) :
 
-//displays all available extensions
 SELECT * FROM pg_available_extensions
+// will display a list of all extensions
 -------------------------------------------------------------------------------------------------------------------
 
 Understand UUID data type :
 
-//universaly unique identifiers 
+//UUID:universaly unique identifiers 
 //installing the uuid extension
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-//involke a function
-SELECT uuid_generate_v4();
 
+//to generate UII have to invoke a function
+
+\df   // display the list of  functions 
+
+SELECT uuid_generate_v4();
+//UIID will never be same -> this make good faith for using primary keys in our tables
 //every time generates a unique string so it can be used for primary keys
-//makes very hard for attackers or haclers
-//we will not get any clashes while migration dbs
+//makes  it very hard for attackers to try and mine our database
+//we will not get any clashes while migration database
 -------------------------------------------------------------------------------------------------------------------
  UUID AS PRIMARY KEYS:
 
@@ -1171,13 +1207,17 @@ CREATE TABLE person(
 	first_name VARCHAR(50) NOT NULL,
 	gender VARCHAR(6) NOT NULL,
 	date_of_birth TIMESTAMP NOT NULL,
-	car_uuid UUID REFERENCES car(id), //foreign key refering to the primary key of car table
+	car_uuid UUID REFERENCES car(car_uuid), //foreign key refering to the primary key of car table
 	UNIQUE(car_uuid)
+	UNIQUE(email)
 )
 CREATE TABLE car(
 	car_uuid UUID NOT NULL PRIMARY KEY,
-	etc
+	............
 )
+
+
+
 SELECT * FROM person JOIN car ON person.car_uuid = car.car_uuid;
 SELECT car using(car_uuid);
 //performing left join
